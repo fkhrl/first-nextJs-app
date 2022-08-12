@@ -1,5 +1,5 @@
 import Link from "next/link";
-function Blog({ blogId = 400 }) {
+function Blog({ data }) {
     return (
         <div>
             <h1>this is blog page</h1>
@@ -15,22 +15,38 @@ function Blog({ blogId = 400 }) {
                 </Link>
                 </li>
                 <li>
-                <Link href="/blog/hello-world">
-                    <a>Blog Post</a>
+                <Link href="/blog/">
+                    <a>Blog</a>
                 </Link>
                 </li>
             </ul>
-            <Link href="/blog/1">
-                <a><h4>Blog title 1</h4></a>
-            </Link>
-            <Link href="/blog/2" replace>
-                <a><h4>Blog title 2</h4></a>
-            </Link>
-            <Link href={`/blog/${blogId}`}>
-                <a><h4>Blog title {blogId}</h4></a>
-            </Link>
+            <hr/>
+            <div className="contriner">
+                {
+                    data.map((post) => {
+                        return (
+                            <div key={post.id}>
+                                <Link href={`blog/${post.id}`} passHref>
+                                <h3>{post.title}</h3>
+                                </Link>
+                                <p>{post.body}</p>
+                            </div>
+                        )
+                    })
+                }
+            </div>
         </div>
     );
 }
+export async function getStaticProps(ctx) {
+    const { params } = ctx;
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts/')
+    const data = await res.json()
 
+    return {
+        props: {
+            data: data
+        }
+    }
+}
 export default Blog
