@@ -1,11 +1,20 @@
 import Link from "next/link";
-function User({data}) {
+import { useEffect,useState } from "react";
+function User() {
+    //client side props for
+    const [users,setUsers] = useState()
+     useEffect ((users) => {
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then((res) => res.json())
+        .then((data) => setUsers(data))
+    })
+
     return (
         <div>
             <h2>this is user list page</h2>
             <hr/>
-            {
-                data.map((user) => {
+             {
+                users?.map((user) => {
                     return (
                         <div key={user.id}>
                             <Link href={`user/${user.id}`} passHref>
@@ -19,15 +28,15 @@ function User({data}) {
         </div>
     );
 }
-
-export async function getServerSideProps(ctx){
-    const res = await fetch('https://jsonplaceholder.typicode.com/users')
-    const data = await res.json()
-    return {
-        props:{
-            data:data
-        }
-    }
-}
+// ======= server side props ======= 
+// export async function getServerSideProps(ctx){
+//     const res = await fetch('https://jsonplaceholder.typicode.com/users')
+//     const data = await res.json()
+//     return {
+//         props:{
+//             users:data
+//         }
+//     }
+// }
 
 export default User;
