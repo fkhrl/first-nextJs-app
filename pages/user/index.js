@@ -30,6 +30,7 @@ function User() {
         fetch(`/api/users/${userId}`,{
             method: "DELETE",
         })
+        onLoadUserList()
     }
     return (
         <div>
@@ -43,8 +44,9 @@ function User() {
                     return (
                         <div key={user.id}>
                             <Link href={`user/${user.id}`} passHref>
-                                <h5>{user.name} <button onClick={() => handelDeleteUser(user.id)} type="button">Delete</button></h5>
+                                <h5>{user.name}</h5>
                             </Link>
+                            <button onClick={() => handelDeleteUser(user.id)} type="button">Delete</button>
                                 <hr/>
                         </div>
                     )
